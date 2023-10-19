@@ -15,12 +15,14 @@ public class LevelStarter : MonoBehaviour
 
     void Start()
     {
+        CollectibleControl.coinCount = 0;
         StartCoroutine(CountSequence());
     }
 
     IEnumerator CountSequence()
     {
-        yield return new WaitForSeconds(1.5f);
+        PlayerMove.canMove = false;
+        yield return new WaitForSeconds(1);
         countDown3.SetActive(true);
         readyFX.Play();
         yield return new WaitForSeconds(1f);
