@@ -2,12 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuFunction : MonoBehaviour
 {
+    [Header("Menus")]
+    public GameObject mainMenu;
+    public GameObject storeMenu;
+    public GameObject achievementMenu;
+    public GameObject creditsMenu;
+
+    [Header("Main Menu")]
     public GameObject[] hintText;
     public bool swapHint = false;
     public int hintNum;
+
+    [Header("Store Menu")]
+    public GameObject coinWalletDisplay;
+    public static int coinWallet;
 
     void Update()
     {
@@ -16,11 +28,19 @@ public class MainMenuFunction : MonoBehaviour
             swapHint = true;
             StartCoroutine(SwapHintMessage());
         }
+
+        coinWalletDisplay.GetComponent<Text>().text = "" + coinWallet;
     }
 
     public void PlayGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void DisplayStoreMenu()
+    {
+        mainMenu.SetActive(false);
+        storeMenu.SetActive(true);
     }
 
     IEnumerator SwapHintMessage()

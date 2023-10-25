@@ -17,6 +17,7 @@ public class EndRunSequence : MonoBehaviour
 
     IEnumerator EndSequence()
     {
+        MainMenuFunction.coinWallet = MainMenuFunction.coinWallet += CollectibleControl.coinCount;
         yield return new WaitForSeconds(3);
         liveCoins.SetActive(false);
         liveDis.SetActive(false);
