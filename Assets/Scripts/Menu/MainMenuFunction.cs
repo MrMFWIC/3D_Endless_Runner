@@ -139,11 +139,25 @@ public class MainMenuFunction : MonoBehaviour
         }
         else if (level == "MountainLevel")
         {
-            levelSelect = 2;
+            if (levelsUnlocked[1] == true)
+            {
+                levelSelect = 2;
+            }
+            else
+            {
+                levelSelect = 1;
+            }
         }
         else if (level == "ForestLevel")
         {
-            levelSelect = 3;
+            if (levelsUnlocked[2] == true)
+            {
+                levelSelect = 3;
+            }
+            else
+            {
+                levelSelect = 1;
+            }
         }
     }
 
