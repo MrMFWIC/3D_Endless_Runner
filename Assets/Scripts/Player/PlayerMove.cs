@@ -11,12 +11,18 @@ public class PlayerMove : MonoBehaviour
     public bool comingDown = false;
     public GameObject playerObject;
 
+    //Touch Control Variables
+    private Vector2 startPos;
+    public int pixelDistToDetect = 50;
+    private bool fingerDown;
+
     void Update()
     {
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed, Space.World);
 
         if (canMove == true)
         {
+            //PC
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
                 if (this.gameObject.transform.position.x > LevelBoundary.leftSide)
@@ -41,6 +47,47 @@ public class PlayerMove : MonoBehaviour
                     playerObject.GetComponent<Animator>().Play("Jump");
                     StartCoroutine(JumpSequence());
                 }
+            }
+
+            //Mobile
+            if (fingerDown == false && Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
+            {
+                startPos = Input.touches[0].position;
+                fingerDown = true;
+            }
+
+            if (fingerDown)
+            {
+                if (Input.touches[0].position.y >= startPos.y + pixelDistToDetect)
+                {
+                    if (isJumping == false)
+                    {
+                        isJumping = true;
+                        playerObject.GetComponent<Animator>().Play("Jump");
+                        StartCoroutine(JumpSequence());
+                    }
+                }
+
+                if (Input.touches[0].position.x <= startPos.x + pixelDistToDetect)
+                {
+                    if (this.gameObject.transform.position.x > LevelBoundary.leftSide)
+                    {
+                        transform.Translate(Vector3.left * Time.deltaTime * leftRightSpeed);
+                    }
+                }
+
+                if (Input.touches[0].position.x >= startPos.x + pixelDistToDetect)
+                {
+                    if (this.gameObject.transform.position.x < LevelBoundary.rightSide)
+                    {
+                        transform.Translate(Vector3.left * Time.deltaTime * leftRightSpeed * -1);
+                    }
+                }
+            }
+
+            if (fingerDown && Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended)
+            {
+                fingerDown = false;
             }
         }
 
