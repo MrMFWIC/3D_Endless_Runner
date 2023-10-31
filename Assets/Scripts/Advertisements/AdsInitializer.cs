@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(RewardedAdsButton))]
 public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 {
     [SerializeField] string _androidGameId;
@@ -10,11 +12,19 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     [SerializeField] bool _testMode = true;
     private string _gameId;
 
-    [SerializeField] RewardedAdsButton rewardedAdsButton;
+    [SerializeField] Button rewardedAdsButton;
+
+    private RewardedAdsButton rewardAd;
 
     void Awake()
     {
         InitializeAds();
+    }
+
+    void Start()
+    {
+        rewardAd = GetComponent<RewardedAdsButton>();
+        rewardedAdsButton.onClick.AddListener(rewardAd.LoadAd);
     }
 
     public void InitializeAds()
@@ -36,7 +46,6 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     public void OnInitializationComplete()
     {
         Debug.Log("Unity Ads initialization complete.");
-        rewardedAdsButton.LoadAd();
     }
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)

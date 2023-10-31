@@ -13,7 +13,7 @@ public class PlayerMove : MonoBehaviour
 
     //Touch Control Variables
     private Vector2 startPos;
-    public int pixelDistToDetect = 50;
+    public int pixelDistToDetect = 180;
     private bool fingerDown;
 
     void Update()
