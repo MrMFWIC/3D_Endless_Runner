@@ -5,8 +5,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenuFunction : MonoBehaviour
+[RequireComponent(typeof(AdsInitializer))]
+public class MainMenuFunction : MonoBehaviour, IDataPersistance
 {
+    [Header("Advertisements")]
+    private AdsInitializer adsInit;
+    private InterstitialAds interstitialAd;
+    private RewardedAds rewardAd;
+    public int interAdCounter = 0;
+
     [Header("Menus")]
     public GameObject mainMenu;
     public GameObject storeMenu;
@@ -30,8 +37,25 @@ public class MainMenuFunction : MonoBehaviour
     public Button mountains;
     public Button desert;
     public static int levelSelect = 1;
-    public bool[] levelsUnlocked = new bool[3] { true, false, false};
+    public bool[] levelsUnlocked = new bool[3] { true, false, false };
     public static int coinWallet;
+
+    public void LoadData(GameData data)
+    {
+        coinWallet = data.coinWallet;
+        levelsUnlocked = data.levelsUnlocked;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.coinWallet = coinWallet;
+        data.levelsUnlocked = levelsUnlocked;
+    }
+
+    private void Start()
+    {
+        adsInit = GetComponent<AdsInitializer>();
+    }
 
     void Update()
     {
@@ -80,7 +104,17 @@ public class MainMenuFunction : MonoBehaviour
 
     public void PlayGame()
     {
+
         SceneManager.LoadScene(levelSelect);
+
+        if (interAdCounter < 3)
+        {
+            interAdCounter += 1;
+        }
+        else if (interAdCounter >= 3)
+        {
+            interstitialAd.ShowAd();
+        }
     }
 
     public void DisplayStoreMenu()

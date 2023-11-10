@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(RewardedAdsButton))]
+[RequireComponent(typeof(RewardedAds)), RequireComponent(typeof(InterstitialAds))]
 public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 {
     [SerializeField] string _androidGameId;
@@ -14,7 +14,8 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 
     [SerializeField] Button rewardedAdsButton;
 
-    private RewardedAdsButton rewardAd;
+    private RewardedAds rewardAd;
+    private InterstitialAds interstitialAd;
 
     void Awake()
     {
@@ -23,8 +24,12 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 
     void Start()
     {
-        rewardAd = GetComponent<RewardedAdsButton>();
-        rewardedAdsButton.onClick.AddListener(rewardAd.LoadAd);
+        rewardAd = GetComponent<RewardedAds>();
+        interstitialAd = GetComponent<InterstitialAds>();
+        if (rewardedAdsButton)
+        {
+            rewardedAdsButton.onClick.AddListener(rewardAd.LoadAd);
+        }
     }
 
     public void InitializeAds()
